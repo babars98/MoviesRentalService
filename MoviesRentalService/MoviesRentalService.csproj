@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AccountService.svc" />
+    <Content Include="MoviesService.svc" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -72,8 +73,13 @@
       <DependentUpon>AccountService.svc</DependentUpon>
     </Compile>
     <Compile Include="BusinessLogic\AccountBL.cs" />
+    <Compile Include="BusinessLogic\MovieBL.cs" />
     <Compile Include="DAL\DataAccess.cs" />
     <Compile Include="IAccountService.cs" />
+    <Compile Include="IMoviesService.cs" />
+    <Compile Include="MoviesService.svc.cs">
+      <DependentUpon>MoviesService.svc</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
