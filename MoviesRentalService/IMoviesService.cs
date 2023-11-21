@@ -18,6 +18,9 @@ namespace MoviesRentalService
         string GetMovie(int movieId);
 
         [OperationContract]
+        string RentedMovies(int userId);
+
+        [OperationContract]
         bool AddMovie(string name, string imagePath, string description);
 
         [OperationContract]
@@ -26,5 +29,7 @@ namespace MoviesRentalService
         [OperationContract]
         bool RentMovie(int movieId, int userId);
 
+        [OperationContract]
+        bool IsMovieAlreadyRented(int userId, int movieId);
     }
 }

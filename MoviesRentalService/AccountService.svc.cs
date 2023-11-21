@@ -22,7 +22,7 @@ namespace MoviesRentalService
             _accBusinessLogic = new AccountBL();
         }
 
-        public Object Login(string email, string password)
+        public string Login(string email, string password)
         {
             var result = _accBusinessLogic.LoginUser(email, password);
             return result == null ? null : JsonConvert.SerializeObject(result);

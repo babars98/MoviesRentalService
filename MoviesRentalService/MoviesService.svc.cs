@@ -43,9 +43,20 @@ namespace MoviesRentalService
             return movie == null ? null : JsonConvert.SerializeObject(movie);
         }
 
+        public string RentedMovies(int userId)
+        {
+            var movies = _businessLogic.GetRentedMoviesbyUser(userId);
+            return movies == null ? null : JsonConvert.SerializeObject(movies);
+        }
+
         public bool RentMovie(int movieId, int userId)
         {
             return _businessLogic.RentMovie(userId, movieId);
+        }
+
+        public bool IsMovieAlreadyRented(int userId, int movieId)
+        {
+            return _businessLogic.CheckMovieAlreadyRented(userId, movieId);
         }
     }
 }

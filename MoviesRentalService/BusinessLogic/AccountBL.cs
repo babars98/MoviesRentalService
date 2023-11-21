@@ -22,7 +22,7 @@ namespace MoviesRentalService.BusinessLogic
         public object LoginUser(string email, string password)
         {
             var hashedPassword = ConvertStringtoHash(password);
-            string query = String.Format("SELECT UserId,Name,Email,IsAdmin FROM dbo.[User] WHERE email = {0} AND Password = '{1}'", email, hashedPassword);
+            string query = String.Format("SELECT UserId,Name,Email,IsAdmin FROM dbo.[User] WHERE email = '{0}' AND Password = '{1}'", email, hashedPassword);
             var datatable = _dataAccess.ExecuteReadQuery(query);
 
             if (datatable.Rows.Count < 1)
@@ -32,7 +32,8 @@ namespace MoviesRentalService.BusinessLogic
             dynamic obj = new ExpandoObject();
 
             obj.UserId = Convert.ToInt32(row["UserId"]);
-            obj.Name = Convert.ToSingle(row["name"]);
+            obj.Name = row["Name"].ToString();
+            obj.Email = row["Email"].ToString();
             obj.IsAdmin = Convert.ToBoolean(row["IsAdmin"]);
             obj.IsSuccess = true;
             obj.Message = "Login Successfull";

@@ -17,7 +17,7 @@ namespace MoviesRentalService
         bool Register(string name, string email, string password);
 
         [OperationContract]
-        Object Login(string email, string password);
+        string Login(string email, string password);
     }
 
 }

@@ -37,7 +37,7 @@ namespace MoviesRentalService.BusinessLogic
         {
             string query = string.Format("DELETE FROM dbo.[Movie] WHERE MovieId = {0}", movieId);
 
-            return _dataAccess.ExecuteWriteQuery(query, null);
+            return _dataAccess.ExecuteWriteQuery(query, new Dictionary<string, object>());
         }
 
         public List<ExpandoObject> GetAllMovies()
@@ -81,10 +81,40 @@ namespace MoviesRentalService.BusinessLogic
             obj.MovieId = Convert.ToInt32(row["MovieId"]);
             obj.MovieName = row["Name"].ToString();
             obj.ImagePath = row["ImagePath"].ToString();
+            obj.Description = row["Description"].ToString();
             obj.IsSuccess = true;
             obj.Message = "Movies Listed Success";
 
             return obj;
+        }
+
+        public List<ExpandoObject> GetRentedMoviesbyUser(int userId)
+        {
+            string query = string.Format(@"SELECT m.MovieId,m.Name,m.ImagePath,mr.DateRented FROM dbo.[Movie] m 
+                                           INNER JOIN MovieRental mr ON mr.MovieId = m.MovieId
+                                           WHERE mr.UserId = {0} AND mr.IsRented = 1 AND m.IsActive = 1", userId);
+
+            var datatable = _dataAccess.ExecuteReadQuery(query);
+
+            if (datatable.Rows.Count < 1)
+                return null;
+
+            var list = new List<ExpandoObject>();
+
+            foreach (DataRow row in datatable.Rows)
+            {
+                dynamic obj = new ExpandoObject();
+                obj.MovieId = Convert.ToInt32(row["MovieId"]);
+                obj.MovieName = row["Name"].ToString();
+                obj.ImagePath = row["ImagePath"].ToString();
+                obj.DateRented = Convert.ToDateTime(row["DateRented"]);
+                obj.IsSuccess = true;
+                obj.Message = "Movies Listed Success";
+
+                list.Add(obj);
+            }
+
+            return list;
         }
 
         public bool RentMovie(int userId, int movieId)
@@ -100,6 +130,15 @@ namespace MoviesRentalService.BusinessLogic
             };
 
             return _dataAccess.ExecuteWriteQuery(query, param);
+        }
+
+        public bool CheckMovieAlreadyRented(int userId, int movieId)
+        {
+            string query = String.Format("SELECT 1 FROM dbo.[MovieRental] WHERE UserId = {0} AND MovieId = {1} AND IsRented = 1", userId, movieId);
+
+            var dt = _dataAccess.ExecuteReadQuery(query);
+
+            return dt.Rows.Count > 0;
         }
     }
 }
