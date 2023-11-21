@@ -32,10 +32,7 @@ namespace MoviesRentalService.DAL
                     }
                 }
             }
-            catch(Exception ex)
-            {
-                return null;
-            }
+            catch(Exception ex) { }
 
             return dt;
         }
